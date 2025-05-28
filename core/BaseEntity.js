@@ -5,6 +5,7 @@ class BaseEntity {
     this.model = model;
   }
 
+  // CREATE
   async insert(data) {
     try {
       const doc = new this.model(data);
@@ -17,6 +18,7 @@ class BaseEntity {
     }
   }
 
+  // READ
   async find(filter = {}) {
     try {
       const results = await this.model.find(filter).exec();
@@ -28,6 +30,7 @@ class BaseEntity {
     }
   }
 
+  // DELETE
   async delete(id) {
     try {
       const result = await this.model.findByIdAndDelete(id).exec();
@@ -39,6 +42,22 @@ class BaseEntity {
       return result;
     } catch (error) {
       logger.error(`[${this.model.modelName}] Delete error: ${error}`);
+      throw error;
+    }
+  }
+
+  // UPDATE
+  async update(id, newData) {
+    try {
+      const updated = await this.model.findByIdAndUpdate(id, newData, { new: true }).exec();
+      if (updated) {
+        console.log(`[${this.model.modelName}] Updated: ${updated._id}`);
+      } else {
+        console.log(`[${this.model.modelName}] No document found to update.`);
+      }
+      return updated;
+    } catch (error) {
+      logger.error(`[${this.model.modelName}] Update error: ${error}`);
       throw error;
     }
   }
