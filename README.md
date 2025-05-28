@@ -22,28 +22,27 @@ Uma biblioteca modular de acesso a banco de dados MongoDB para sistemas de e-com
 ```
 ecommerce-backend/
 │
-├── .env # Variáveis de ambiente
-├── package.json # Dependências e scripts
-├── logger.js # Logger de erros com Winston
-├── index.js # Exemplo básico de uso da biblioteca
-├── menu.js # Menu interativo para uso manual no terminal
+├── .env                  # Variáveis de ambiente (.env com MONGO_URI)
+├── package.json          # Dependências do projeto (Mongoose, dotenv, winston, etc.)
+├── logger.js             # Configuração do logger com Winston
+├── index.js              # Exemplo básico de uso da biblioteca (insert, find, delete)
+├── menu.js               # Menu interativo no terminal com CRUD completo (Create, Read, Update, Delete)
 │
 ├── config/
-│ └── db.js # Conexão e desconexão com MongoDB
+│   └── db.js             # Módulo de conexão e desconexão com o banco MongoDB
 │
 ├── core/
-│ └── BaseEntity.js # Classe base com métodos insert, find e delete
+│   └── BaseEntity.js     # Classe genérica base com métodos insert, find, delete e update
 │
 ├── models/
-│ ├── Product.js # Entidade Produto
-│ ├── Category.js # Entidade Categoria
-│ ├── User.js # Entidade Usuário
-│ └── Order.js # Entidade Pedido
+│   ├── Product.js        # Entidade Produto, herda de BaseEntity
+│   ├── Category.js       # Entidade Categoria
+│   ├── User.js           # Entidade Usuário
+│   └── Order.js          # Entidade Pedido (com ref para User e Product)
 │
-└── logs/
-└── error.log # Arquivo de logs de erro
-```
----
+├── logs/
+│   └── error.log         # Log de erros gerado automaticamente via Winston
+
 
 ## :gear: Pré-requisitos
 
@@ -64,8 +63,8 @@ MONGO_URI=mongodb://localhost:27017/ecommerce
 
 # Clone o projeto
 ```
-git clone https://github.com/seu-usuario/ecommerce-backend.git
-cd ecommerce-backend
+git clone https://github.com/LineRout/ProjetoBackEnd.git
+cd ProjetoBackEnd
 ```
 ---
 # Instale as dependências
