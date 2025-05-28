@@ -42,7 +42,8 @@ ecommerce-backend/
 │
 ├── logs/
 │   └── error.log         # Log de erros gerado automaticamente via Winston
-
+```
+---
 
 ## :gear: Pré-requisitos
 
@@ -115,8 +116,9 @@ const { connect, disconnect } = require('./config/db');
 1 - Inserir produto
 2 - Listar produtos
 3 - Deletar produto
-4 - Inserir exemplos automáticos
-5 - Sair
+4 - Atualizar produto
+5 - Inserir exemplos automáticos
+6 - Sair
 ```
 ---
 
@@ -124,7 +126,7 @@ const { connect, disconnect } = require('./config/db');
 ## 🛠 Funcionalidades
 ✅ Conexão com MongoDB utilizando URI
 
-✅ Classes com métodos genéricos: insert, find, delete
+✅ Classes com métodos genéricos: insert, find, delete e update
 
 ✅ Modelos para Produto, Categoria, Usuário e Pedido
 
