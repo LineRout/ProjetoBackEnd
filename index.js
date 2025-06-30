@@ -1,28 +1,36 @@
+// index.js
 require('dotenv').config();
-const { connect, disconnect } = require('./config/db');
-const Product = require('./models/Product');
+const express = require('express');
+const mongoose = require('mongoose');
 
-(async () => {
-  try {
-    await connect(process.env.MONGO_URI);
+const app = express();
+const PORT = process.env.PORT || 3000;
 
-    const produto = new Product();
+// Middleware para JSON
+app.use(express.json());
 
-    const novo = await produto.insert({
-      title: 'Produto teste',
-      description: 'Descrição de teste',
-      price: 25.99,
-      category: 'Testes',
-      stock: 10
-    });
+// === IMPORTAÇÃO DAS ROTAS ===
+const authRoutes = require('./routes/authRoutes');
+const productRoutes = require('./routes/productRoutes');
 
-    const encontrados = await produto.find({ category: 'Testes' });
-    console.log('Encontrados:', encontrados);
+// === USO DAS ROTAS ===
+app.use('/api/auth', authRoutes);
+app.use('/api/produtos', productRoutes);
 
-    await produto.delete(novo._id);
+// ROTA BASE PARA TESTE
+app.get('/', (req, res) => {
+  res.json({ mensagem: 'API do E-commerce funcionando!' });
+});
 
-    await disconnect();
-  } catch (err) {
-    console.error('Erro:', err);
-  }
-})();
+// === CONEXÃO COM O MONGODB ===
+mongoose.connect(process.env.MONGO_URI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).then(() => {
+  console.log('✅ MongoDB conectado');
+  app.listen(PORT, () => {
+    console.log(` Servidor rodando na porta ${PORT}`);
+  });
+}).catch(err => {
+  console.error(' Erro ao conectar ao MongoDB:', err);
+});

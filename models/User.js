@@ -1,17 +1,32 @@
 const mongoose = require('mongoose');
-const BaseEntity = require('../core/BaseEntity');
+const bcrypt = require('bcrypt');
 
 const userSchema = new mongoose.Schema({
-  username: { type: String, required: true, unique: true },
-  email: { type: String, required: true, unique: true },
-  hashedPassword: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now }
+  nome: {
+    type: String,
+    required: true
+  },
+  email: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  senha: {
+    type: String,
+    required: true
+  }
 });
 
-class User extends BaseEntity {
-  constructor() {
-    super(mongoose.model('User', userSchema));
-  }
-}
+// Criptografar a senha antes de salvar
+userSchema.pre('save', async function (next) {
+  if (!this.isModified('senha')) return next();
+  this.senha = await bcrypt.hash(this.senha, 10);
+  next();
+});
 
-module.exports = User;
+// Método para verificar a senha
+userSchema.methods.compararSenha = function (senhaDigitada) {
+  return bcrypt.compare(senhaDigitada, this.senha);
+};
+
+module.exports = mongoose.model('User', userSchema);
